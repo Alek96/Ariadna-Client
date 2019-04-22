@@ -1,15 +1,49 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    app:layout_behavior="@string/appbar_scrolling_view_behavior">
+    android:orientation="vertical">
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_centerInParent="true"
-        android:text="Tests Fragments"
-        android:textSize="30sp" />
 
-</RelativeLayout>
+    <FrameLayout
+        android:id="@+id/fragment_test_container"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="4" />
+
+
+    <Button
+        android:id="@+id/ButtonBluetoothTest"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:text="@string/button_bluetooth"
+        android:textSize="20sp" />
+
+    <Button
+        android:id="@+id/ButtonBatteryTest"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:text="@string/button_battery"
+        android:textSize="20sp" />
+
+    <Button
+        android:id="@+id/ButtonMotorsTests"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:text="@string/button_motors"
+        android:textSize="20sp" />
+
+    <Button
+        android:id="@+id/ButtonSensorsTest"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:text="@string/button_sensors"
+        android:textSize="20sp" />
+
+</LinearLayout>
+
+

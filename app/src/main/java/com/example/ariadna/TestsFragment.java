@@ -31,7 +31,7 @@ public class TestsFragment extends Fragment implements View.OnClickListener {
                     new BluetoothTestFragment()).commit();
         } else if (id == R.id.ButtonBatteryTest) {
             getFragmentManager().beginTransaction().replace(R.id.fragment_container,
-                    new ButteryTestFragment()).commit();
+                    new BatteryTestFragment()).commit();
         } else if (id == R.id.ButtonMotorsTests) {
             getFragmentManager().beginTransaction().replace(R.id.fragment_container,
                     new MotorsTestsFragment()).commit();

@@ -64,7 +64,7 @@
     <string name="button_refresh_paired_devices">Refresh paired devices</string>
     <string name="paired_devices">Paired Devices</string>
     <string name="connecting">Connecting &#8230;</string>
-    <string name="buttery_level">Buttery Level</string>
+    <string name="battery_level">Battery Level</string>
     <string name="sensors_value">Sensors Value</string>
     <string name="button_refresh">Refresh</string>
     <string name="configurations">Configurations</string>

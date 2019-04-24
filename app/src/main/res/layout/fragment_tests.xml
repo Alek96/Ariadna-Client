@@ -5,20 +5,13 @@
     android:orientation="vertical">
 
 
-    <FrameLayout
-        android:id="@+id/fragment_test_container"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="4" />
-
-
     <Button
         android:id="@+id/ButtonBluetoothTest"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1"
         android:text="@string/button_bluetooth"
-        android:textSize="20sp" />
+        android:textSize="24sp" />
 
     <Button
         android:id="@+id/ButtonBatteryTest"
@@ -26,7 +19,7 @@
         android:layout_height="0dp"
         android:layout_weight="1"
         android:text="@string/button_battery"
-        android:textSize="20sp" />
+        android:textSize="24sp" />
 
     <Button
         android:id="@+id/ButtonMotorsTests"
@@ -34,7 +27,7 @@
         android:layout_height="0dp"
         android:layout_weight="1"
         android:text="@string/button_motors"
-        android:textSize="20sp" />
+        android:textSize="24sp" />
 
     <Button
         android:id="@+id/ButtonSensorsTest"
@@ -42,7 +35,7 @@
         android:layout_height="0dp"
         android:layout_weight="1"
         android:text="@string/button_sensors"
-        android:textSize="20sp" />
+        android:textSize="24sp" />
 
 </LinearLayout>
 

@@ -9,14 +9,14 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
-public class TestResultFragment extends Fragment implements View.OnClickListener {
+public class ConfigurationsFragment extends Fragment implements View.OnClickListener {
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_test_result, container, false);
+        View view = inflater.inflate(R.layout.fragment_configutrations, container, false);
 
-//        view.findViewById(R.id.ButtonRun).setOnClickListener(this);
-//        view.findViewById(R.id.ButtonStop).setOnClickListener(this);
+        view.findViewById(R.id.ButtonLoad).setOnClickListener(this);
+        view.findViewById(R.id.ButtonSave).setOnClickListener(this);
 
         return view;
     }
@@ -25,10 +25,10 @@ public class TestResultFragment extends Fragment implements View.OnClickListener
     public void onClick(View v) {
         int id = v.getId();
 
-        if (id == R.id.ButtonRun) {
-            Toast.makeText(getActivity(), "Run", Toast.LENGTH_SHORT).show();
-        } else if (id == R.id.ButtonStop) {
-            Toast.makeText(getActivity(), "Stop", Toast.LENGTH_SHORT).show();
+        if (id == R.id.ButtonLoad) {
+            Toast.makeText(getActivity(), "Load", Toast.LENGTH_SHORT).show();
+        } else if (id == R.id.ButtonSave) {
+            Toast.makeText(getActivity(), "Save", Toast.LENGTH_SHORT).show();
         }
     }
 }

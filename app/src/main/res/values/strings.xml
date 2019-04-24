@@ -58,4 +58,14 @@
     <string name="sensor_6">Sensor 6</string>
     <string name="sensor_7">Sensor 7</string>
     <string name="sensor_8">Sensor 8</string>
+    <string name="button_send">Send</string>
+    <string name="edit_text_send_hint">Text</string>
+    <string name="not_connected">Not Connected</string>
+    <string name="button_refresh_paired_devices">Refresh paired devices</string>
+    <string name="paired_devices">Paired Devices</string>
+    <string name="connecting">Connecting &#8230;</string>
+    <string name="buttery_level">Buttery Level</string>
+    <string name="sensors_value">Sensors Value</string>
+    <string name="button_refresh">Refresh</string>
+    <string name="configurations">Configurations</string>
 </resources>

@@ -7,7 +7,6 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
 
 public class TestsFragment extends Fragment implements View.OnClickListener {
     @Nullable
@@ -28,18 +27,16 @@ public class TestsFragment extends Fragment implements View.OnClickListener {
         int id = v.getId();
 
         if (id == R.id.ButtonBluetoothTest) {
-            Toast.makeText(getActivity(), "Run", Toast.LENGTH_SHORT).show();
-            getFragmentManager().beginTransaction().replace(R.id.fragment_test_container,
-                    new TestResultFragment()).commit();
+            getFragmentManager().beginTransaction().replace(R.id.fragment_container,
+                    new BluetoothTestFragment()).commit();
         } else if (id == R.id.ButtonBatteryTest) {
-            Toast.makeText(getActivity(), "Run", Toast.LENGTH_SHORT).show();
-            getFragmentManager().beginTransaction().replace(R.id.fragment_test_container,
-                    new TestResultFragment()).commit();
+            getFragmentManager().beginTransaction().replace(R.id.fragment_container,
+                    new ButteryTestFragment()).commit();
         } else if (id == R.id.ButtonMotorsTests) {
-            getFragmentManager().beginTransaction().replace(R.id.fragment_test_container,
+            getFragmentManager().beginTransaction().replace(R.id.fragment_container,
                     new MotorsTestsFragment()).commit();
         } else if (id == R.id.ButtonSensorsTest) {
-            getFragmentManager().beginTransaction().replace(R.id.fragment_test_container,
+            getFragmentManager().beginTransaction().replace(R.id.fragment_container,
                     new SensorsTestsFragment()).commit();
         }
     }

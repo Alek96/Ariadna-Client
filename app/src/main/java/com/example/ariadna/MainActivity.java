@@ -2,22 +2,26 @@ package com.example.ariadna;
 
 import android.os.Bundle;
 import android.support.annotation.NonNull;
-import android.support.v4.view.GravityCompat;
-import android.support.v7.app.ActionBarDrawerToggle;
-import android.view.MenuItem;
 import android.support.design.widget.NavigationView;
+import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
-
+import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
+import android.view.MenuItem;
+import android.widget.Toast;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
+    private static final String TAG = "MainActivity";
 
     private DrawerLayout drawer;
+    private BluetoothConnectionService bluetoothService;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        Log.d(TAG, "onCreate: Started");
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
@@ -35,13 +39,34 @@ public class MainActivity extends AppCompatActivity
 
         if (savedInstanceState == null) {
             getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
-                    new HomeFragment()).commit();
+                    new BTDeviceListFragment()).commit();
             navigationView.setCheckedItem(R.id.nav_home);
         }
     }
 
     @Override
+    public void onDestroy() {
+        Log.d(TAG, "onDestroy: Started");
+        super.onDestroy();
+        if (bluetoothService != null) {
+            bluetoothService.stop();
+        }
+    }
+
+    @Override
+    public void onResume() {
+        Log.d(TAG, "onResume: Started");
+        super.onResume();
+        if (bluetoothService != null) {
+            if (bluetoothService.getState() == BluetoothConnectionService.STATE_NONE) {
+                bluetoothService.start();
+            }
+        }
+    }
+
+    @Override
     public void onBackPressed() {
+        Log.d(TAG, "onBackPressed: Started");
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
         if (drawer.isDrawerOpen(GravityCompat.START)) {
             drawer.closeDrawer(GravityCompat.START);
@@ -50,9 +75,9 @@ public class MainActivity extends AppCompatActivity
         }
     }
 
-
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+        Log.d(TAG, "onNavigationItemSelected: Started");
         // Handle navigation view item clicks here.
         int id = item.getItemId();
 
@@ -64,10 +89,22 @@ public class MainActivity extends AppCompatActivity
                     new TestsFragment()).commit();
         } else if (id == R.id.nav_tools) {
             getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
-                    new ToolsFragment()).commit();
+                    new ConfigurationsFragment()).commit();
         }
 
         drawer.closeDrawer(GravityCompat.START);
         return true;
+    }
+
+    public void createBluetoothService(String address) {
+        Log.d(TAG, "createBluetoothService: Started with: 0 " + address);
+        bluetoothService = new BluetoothConnectionService(this, address);
+        bluetoothService.start();
+        Toast.makeText(this, R.string.connecting, Toast.LENGTH_SHORT).show();
+    }
+
+    public BluetoothConnectionService getBluetoothService() {
+        Log.d(TAG, "getBluetoothService: Started");
+        return bluetoothService;
     }
 }

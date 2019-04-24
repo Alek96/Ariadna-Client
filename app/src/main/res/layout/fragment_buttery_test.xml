@@ -11,12 +11,12 @@
         android:fontFamily="sans-serif-smallcaps"
         android:gravity="center"
         android:padding="8dp"
-        android:text="@string/sensors_value"
+        android:text="@string/buttery_level"
         android:textIsSelectable="false"
         android:textSize="24sp" />
 
     <ListView
-        android:id="@+id/sensors_value_view"
+        android:id="@+id/buttery_level_view"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1"

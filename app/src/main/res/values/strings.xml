@@ -68,4 +68,5 @@
     <string name="sensors_value">Sensors Value</string>
     <string name="button_refresh">Refresh</string>
     <string name="configurations">Configurations</string>
+    <string name="connected">Connected</string>
 </resources>

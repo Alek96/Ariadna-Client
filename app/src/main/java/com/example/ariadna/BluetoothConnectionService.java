@@ -17,6 +17,14 @@ import java.util.UUID;
 public class BluetoothConnectionService {
     private static final String TAG = "BluetoothConnectionSrv";
 
+    public static final int MESSAGE_READ = 1;
+    public static final int MESSAGE_WRITE = 2;
+
+    // Constants that indicate the current connection state
+    public static final int STATE_NONE = 0;       // we're doing nothing
+    public static final int STATE_CONNECTING = 1; // now initiating an outgoing connection
+    public static final int STATE_CONNECTED = 2;  // now connected to a remote device
+
     //Standard SerialPortService ID
     private static final UUID MY_UUID_SECURE =
 //            UUID.fromString("fa87c0d0-afac-11de-8a39-0800200c9a66");
@@ -31,10 +39,6 @@ public class BluetoothConnectionService {
     private int mState;
     private String mAddress;
 
-    // Constants that indicate the current connection state
-    public static final int STATE_NONE = 0;       // we're doing nothing
-    public static final int STATE_CONNECTING = 1; // now initiating an outgoing connection
-    public static final int STATE_CONNECTED = 2;  // now connected to a remote device
 
 
     public BluetoothConnectionService(Context context, String address) {
@@ -244,7 +248,7 @@ public class BluetoothConnectionService {
 
                     if (mHandler != null) {
                         // Send the obtained bytes to the UI Activity
-                        mHandler.obtainMessage(Constants.MESSAGE_READ, bytes, -1, buffer)
+                        mHandler.obtainMessage(MESSAGE_READ, bytes, -1, buffer)
                                 .sendToTarget();
                     }
                 } catch (IOException e) {
@@ -261,7 +265,7 @@ public class BluetoothConnectionService {
             try {
                 mmOutStream.write(buffer);
                 if (mHandler != null) {
-                    mHandler.obtainMessage(Constants.MESSAGE_WRITE, -1, -1, buffer)
+                    mHandler.obtainMessage(MESSAGE_WRITE, -1, -1, buffer)
                             .sendToTarget();
                 }
             } catch (IOException e) {

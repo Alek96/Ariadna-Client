@@ -116,10 +116,13 @@ public class BTDeviceListFragment extends Fragment {
             String address = info.substring(info.length() - 17);
 
             ((MainActivity) getActivity()).createBluetoothService(address);
+            ((MainActivity) getActivity()).active();
 
             Log.d(TAG, "mPairedDeviceListener: onItemClick: Change fragment to HomeFragment");
             getFragmentManager().beginTransaction().replace(R.id.fragment_container,
                     new HomeFragment()).commit();
+
+
         }
     };
 }

@@ -20,7 +20,7 @@ import android.widget.TextView;
 
 public class BluetoothTestFragment extends Fragment {
     private static final String TAG = "BluetoothTestFragment";
-    private static final String mConnectedDeviceName = "Test";
+    private static final String mConnectedDeviceName = "LineFollower";
 
     // Layout Views
     private ListView mConversationView;
@@ -62,18 +62,12 @@ public class BluetoothTestFragment extends Fragment {
 
         mBluetoothService = ((MainActivity) getActivity()).getBluetoothService();
 
-        // Initialize the array adapter for the conversation thread
         mConversationArrayAdapter = new ArrayAdapter<String>(getActivity(), R.layout.message);
-
         mConversationView.setAdapter(mConversationArrayAdapter);
-
-        // Initialize the compose field with a listener for the return key
         mOutEditText.setOnEditorActionListener(mWriteListener);
 
-        // Initialize the send button with a listener that for click events
         mSendButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                // Send a message using content of the edit text widget
                 View view = getView();
                 if (null != view) {
                     TextView textView = (TextView) view.findViewById(R.id.edit_text_out);
@@ -83,25 +77,19 @@ public class BluetoothTestFragment extends Fragment {
             }
         });
 
-        // Initialize the buffer for outgoing messages
         mOutStringBuffer = new StringBuffer("");
     }
 
     private void sendMessage(String message) {
-        Log.d(TAG, "sendMessage: Started");
+        Log.d(TAG, "sendMessage: Started with: " + message);
 
-        // Check that we're actually connected before trying anything
-        if (!mBluetoothService.isConnected()) {
-            return;
-        }
 
-        // Check that there's actually something to send
         if (message.length() > 0) {
-            // Get the message bytes and tell the BluetoothChatService to write
             byte[] send = message.getBytes();
-            mBluetoothService.write(send);
+            if (mBluetoothService.isConnected()) {
+                mBluetoothService.write(send);
+            }
 
-            // Reset out string buffer to zero and clear the edit text field
             mOutStringBuffer.setLength(0);
             mOutEditText.setText(mOutStringBuffer);
         }
@@ -112,9 +100,9 @@ public class BluetoothTestFragment extends Fragment {
         @Override
         public boolean onEditorAction(TextView view, int actionId, KeyEvent event) {
             Log.d(TAG, "mWriteListener: onEditorAction: Started");
-            // If the action is a key-up event on the return key, send the message
             if (actionId == EditorInfo.IME_NULL && event.getAction() == KeyEvent.ACTION_UP) {
                 String message = view.getText().toString();
+                Log.d(TAG, "mWriteListener: onEditorAction: sendMessage with: " + message);
                 sendMessage(message);
             }
             return true;
@@ -126,14 +114,14 @@ public class BluetoothTestFragment extends Fragment {
         public boolean handleMessage(Message msg) {
             Log.d(TAG, "Handler: Started");
             switch (msg.what) {
-                case Constants.MESSAGE_WRITE:
+                case BluetoothConnectionService.MESSAGE_WRITE:
                     byte[] writeBuf = (byte[]) msg.obj;
                     // construct a string from the buffer
                     String writeMessage = new String(writeBuf);
                     mConversationArrayAdapter.add("Me:  " + writeMessage);
                     Log.d(TAG, "Handler: writeMessage is " + writeMessage);
                     break;
-                case Constants.MESSAGE_READ:
+                case BluetoothConnectionService.MESSAGE_READ:
                     byte[] readBuf = (byte[]) msg.obj;
                     // construct a string from the valid bytes in the buffer
                     String readMessage = new String(readBuf, 0, msg.arg1);

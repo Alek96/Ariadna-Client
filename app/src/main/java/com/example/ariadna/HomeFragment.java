@@ -54,8 +54,10 @@ public class HomeFragment extends Fragment {
 
         mRunButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
+                Log.d(TAG, "mRunButton: onClick: Started");
                 Toast.makeText(getActivity(), "Run", Toast.LENGTH_SHORT).show();
                 if (mBluetoothService.isConnected()) {
+                    Log.d(TAG, "mRunButton: onClick: Sending throw bluetooth");
                     mBluetoothService.write(START_MSG.getBytes());
                 }
             }
@@ -63,8 +65,10 @@ public class HomeFragment extends Fragment {
 
         mStopButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
+                Log.d(TAG, "mStopButton: onClick: Started");
                 Toast.makeText(getActivity(), "Stop", Toast.LENGTH_SHORT).show();
                 if (mBluetoothService.isConnected()) {
+                    Log.d(TAG, "mStopButton: onClick: Sending throw bluetooth");
                     mBluetoothService.write(STOP_MSG.getBytes());
                 }
             }

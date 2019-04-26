@@ -37,6 +37,8 @@ public class MainActivity extends AppCompatActivity
         drawer.addDrawerListener(toggle);
         toggle.syncState();
 
+        drawer.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
+
         if (savedInstanceState == null) {
             getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
                     new BTDeviceListFragment()).commit();
@@ -67,12 +69,17 @@ public class MainActivity extends AppCompatActivity
     @Override
     public void onBackPressed() {
         Log.d(TAG, "onBackPressed: Started");
-        DrawerLayout drawer = findViewById(R.id.drawer_layout);
         if (drawer.isDrawerOpen(GravityCompat.START)) {
+            Log.d(TAG, "onBackPressed: close drawer");
             drawer.closeDrawer(GravityCompat.START);
         } else {
             super.onBackPressed();
         }
+    }
+
+    public void active() {
+        drawer.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_OPEN);
+        drawer.closeDrawer(GravityCompat.START);
     }
 
     @Override
@@ -96,7 +103,7 @@ public class MainActivity extends AppCompatActivity
         return true;
     }
 
-    public void createBluetoothService(String address) {
+    public void createBluetoothService(@NonNull String address) {
         Log.d(TAG, "createBluetoothService: Started with: 0 " + address);
         bluetoothService = new BluetoothConnectionService(this, address);
         bluetoothService.start();

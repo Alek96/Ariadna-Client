@@ -58,7 +58,9 @@ public class BatteryTestFragment extends Fragment {
 
         mRefreshButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
+                Log.d(TAG, "mRefreshButton: onClick: Started");
                 if (mBluetoothService.isConnected()) {
+                    Log.d(TAG, "mRefreshButton: onClick: Sending throw bluetooth msg: " + GET_BATTERY_LEVEL_MSG);
                     mBluetoothService.write(GET_BATTERY_LEVEL_MSG.getBytes());
                 }
             }
@@ -72,7 +74,7 @@ public class BatteryTestFragment extends Fragment {
         @Override
         public boolean handleMessage(Message msg) {
             Log.d(TAG, "Handler: Started");
-            if (msg.what == Constants.MESSAGE_READ) {
+            if (msg.what == BluetoothConnectionService.MESSAGE_READ) {
                 byte[] readBuf = (byte[]) msg.obj;
                 String readMessage = new String(readBuf, 0, msg.arg1);
 

@@ -104,7 +104,7 @@ public class MainActivity extends AppCompatActivity
     }
 
     public void createBluetoothService(@NonNull String address) {
-        Log.d(TAG, "createBluetoothService: Started with: 0 " + address);
+        Log.d(TAG, "createBluetoothService: Started with: " + address);
         bluetoothService = new BluetoothConnectionService(this, address);
         bluetoothService.start();
         Toast.makeText(this, R.string.connecting, Toast.LENGTH_SHORT).show();

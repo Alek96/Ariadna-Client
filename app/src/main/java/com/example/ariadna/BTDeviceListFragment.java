@@ -18,18 +18,24 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import java.util.Set;
+import java.util.ArrayList;
+import java.util.Collections;
 
 public class BTDeviceListFragment extends Fragment {
     private static final String TAG = "BTDeviceListFragment";
     public static final int REQUEST_ENABLE_BT = 1;
 
     private BluetoothAdapter mBluetoothAdapter;
-    private Set<BluetoothDevice> mPairedDevices;
+    private ArrayList<BluetoothDevice> mPairedDevices;
+    private ArrayAdapter<BluetoothDevice> mPairedDeviceListAdepter;
 
-    private Button mRefreshPairedDevicesButton;
     private ListView mPairedDeviceListView;
-    private ArrayAdapter<String> mPairedDeviceListAdepter;
+    private Button mRefreshPairedDevicesButton;
+
+    public BTDeviceListFragment() {
+        mBluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
+        mPairedDevices = new ArrayList<>();
+    }
 
     @Nullable
     @Override
@@ -39,9 +45,9 @@ public class BTDeviceListFragment extends Fragment {
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        Log.d(TAG, "onViewCreated: Started");
         mRefreshPairedDevicesButton = view.findViewById(R.id.button_refresh_paired_devices);
         mPairedDeviceListView = view.findViewById(R.id.paired_device_view);
-        mBluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
 
         if (mBluetoothAdapter == null) {
             Log.d(TAG, "checkBT: Bluetooth is not available");
@@ -53,7 +59,7 @@ public class BTDeviceListFragment extends Fragment {
     }
 
     private void checkBT() {
-        Log.d(TAG, "checkBT: Starting.");
+        Log.d(TAG, "checkBT: Started");
 
         if (!mBluetoothAdapter.isEnabled()) {
             Log.d(TAG, "checkBT: Bluetooth is not enable");
@@ -83,46 +89,66 @@ public class BTDeviceListFragment extends Fragment {
         mRefreshPairedDevicesButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                fillPairedDevicesList();
+                refreshPairedDevicesList();
             }
         });
 
-        mPairedDeviceListAdepter = new ArrayAdapter<String>(getActivity(), R.layout.message);
+        mPairedDeviceListAdepter = new ArrayAdapter<BluetoothDevice>(getActivity(), 0, mPairedDevices) {
+            @Override
+            public View getView(int position, View view, ViewGroup parent) {
+                BluetoothDevice device = mPairedDevices.get(position);
+                if (view == null)
+                    view = getActivity().getLayoutInflater().inflate(R.layout.device_list_item, parent, false);
+                TextView device_name = view.findViewById(R.id.device_name);
+                TextView device_address = view.findViewById(R.id.device_address);
+                device_name.setText(device.getName());
+                device_address.setText(device.getAddress());
+                return view;
+            }
+        };
+
         mPairedDeviceListView.setAdapter(mPairedDeviceListAdepter);
         mPairedDeviceListView.setOnItemClickListener(mPairedDeviceListener);
     }
 
-    private void fillPairedDevicesList() {
-        Log.d(TAG, "fillPairedDevicesList: Started");
-        mPairedDevices = mBluetoothAdapter.getBondedDevices();
-
-        if (mPairedDevices.size() > 0) {
-            Log.d(TAG, "fillPairedDevicesList: Paired Bluetooth Devices Found.");
-            for (BluetoothDevice bt : mPairedDevices) {
-                mPairedDeviceListAdepter.add(bt.getName() + "\n" + bt.getAddress());
-            }
-        } else {
-            Log.d(TAG, "fillPairedDevicesList: No Paired Bluetooth Devices Found.");
-            Toast.makeText(getContext(), "No Paired Bluetooth Devices Found.", Toast.LENGTH_LONG).show();
+    private void refreshPairedDevicesList() {
+        Log.d(TAG, "refreshPairedDevicesList: Started");
+        mPairedDevices.clear();
+        for (BluetoothDevice device : mBluetoothAdapter.getBondedDevices()) {
+            if (device.getType() != BluetoothDevice.DEVICE_TYPE_LE)
+                mPairedDevices.add(device);
         }
+        Collections.sort(mPairedDevices, BTDeviceListFragment::compareTo);
+        mPairedDeviceListAdepter.notifyDataSetChanged();
     }
 
     private AdapterView.OnItemClickListener mPairedDeviceListener = new AdapterView.OnItemClickListener() {
-        public void onItemClick(AdapterView<?> av, View v, int arg2, long arg3) {
+        public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
             Log.d(TAG, "mPairedDeviceListener: onItemClick: Started");
+            BluetoothDevice device = mPairedDevices.get(position);
 
-            // Get the device MAC address, the last 17 chars in the View
-            String info = ((TextView) v).getText().toString();
-            String address = info.substring(info.length() - 17);
-
-            ((MainActivity) getActivity()).createBluetoothService(address);
+            ((MainActivity) getActivity()).createBluetoothService(device.getAddress());
             ((MainActivity) getActivity()).active();
 
             Log.d(TAG, "mPairedDeviceListener: onItemClick: Change fragment to HomeFragment");
             getFragmentManager().beginTransaction().replace(R.id.fragment_container,
                     new HomeFragment()).commit();
-
-
         }
     };
+
+    /**
+     * sort by name, then address. sort named devices first
+     */
+    static int compareTo(BluetoothDevice a, BluetoothDevice b) {
+        boolean aValid = a.getName() != null && !a.getName().isEmpty();
+        boolean bValid = b.getName() != null && !b.getName().isEmpty();
+        if (aValid && bValid) {
+            int ret = a.getName().compareTo(b.getName());
+            if (ret != 0) return ret;
+            return a.getAddress().compareTo(b.getAddress());
+        }
+        if (aValid) return -1;
+        if (bValid) return +1;
+        return a.getAddress().compareTo(b.getAddress());
+    }
 }

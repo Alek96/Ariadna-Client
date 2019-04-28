@@ -8,25 +8,40 @@
     android:showDividers="middle"
     android:weightSum="2">
 
-    <Button
-        android:id="@+id/ButtonRun"
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_marginBottom="2dp"
         android:layout_weight="1"
-        android:background="@color/colorButtonRun"
-        android:text="@string/button_run"
-        android:textSize="48sp"
-        android:textStyle="bold" />
+        android:background="@color/colorButtonRun">
 
-    <Button
-        android:id="@+id/ButtonStop"
+        <Button
+            android:id="@+id/ButtonRun"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="?attr/selectableItemBackground"
+            android:gravity="center"
+            android:text="@string/button_run"
+            android:textSize="48sp"
+            android:textStyle="bold" />
+    </LinearLayout>
+
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginTop="2dp"
+        android:layout_marginBottom="2dp"
         android:layout_weight="1"
-        android:background="@color/colorButtonStop"
-        android:text="@string/button_stop"
-        android:textSize="48sp"
-        android:textStyle="bold" />
+        android:background="@color/colorButtonStop">
+
+        <Button
+            android:id="@+id/ButtonStop"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="?attr/selectableItemBackground"
+            android:gravity="center"
+            android:text="@string/button_stop"
+            android:textSize="48sp"
+            android:textStyle="bold" />
+    </LinearLayout>
+
 </LinearLayout>

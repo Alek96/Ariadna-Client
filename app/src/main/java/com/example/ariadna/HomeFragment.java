@@ -14,9 +14,6 @@ import android.widget.Toast;
 public class HomeFragment extends Fragment {
     private static final String TAG = "HomeFragment";
 
-    private static final String START_MSG = "start";
-    private static final String STOP_MSG = "stop";
-
     private Button mRunButton;
     private Button mStopButton;
 
@@ -58,7 +55,7 @@ public class HomeFragment extends Fragment {
                 Toast.makeText(getActivity(), "Run", Toast.LENGTH_SHORT).show();
                 if (mBluetoothService.isConnected()) {
                     Log.d(TAG, "mRunButton: onClick: Sending throw bluetooth");
-                    mBluetoothService.write(START_MSG.getBytes());
+                    mBluetoothService.write(Constants.START_MSG.getBytes());
                 }
             }
         });
@@ -69,7 +66,7 @@ public class HomeFragment extends Fragment {
                 Toast.makeText(getActivity(), "Stop", Toast.LENGTH_SHORT).show();
                 if (mBluetoothService.isConnected()) {
                     Log.d(TAG, "mStopButton: onClick: Sending throw bluetooth");
-                    mBluetoothService.write(STOP_MSG.getBytes());
+                    mBluetoothService.write(Constants.STOP_MSG.getBytes());
                 }
             }
         });

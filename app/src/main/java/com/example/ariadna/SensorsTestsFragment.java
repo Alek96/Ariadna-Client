@@ -17,8 +17,6 @@ import android.widget.ListView;
 public class SensorsTestsFragment extends Fragment {
     private static final String TAG = "SensorsTestsFragment";
 
-    private static final String GET_SENSORS_VALUE_MSG = "sensors_value";
-
     // Layout Views
     private ListView mSensorsValueView;
     private Button mRefreshButton;
@@ -60,8 +58,8 @@ public class SensorsTestsFragment extends Fragment {
             public void onClick(View v) {
                 Log.d(TAG, "mRefreshButton: onClick: Started");
                 if (mBluetoothService.isConnected()) {
-                    Log.d(TAG, "mRefreshButton: onClick: Sending throw bluetooth msg: " + GET_SENSORS_VALUE_MSG);
-                    mBluetoothService.write(GET_SENSORS_VALUE_MSG.getBytes());
+                    Log.d(TAG, "mRefreshButton: onClick: Sending throw bluetooth msg: " + Constants.GET_SENSORS_VALUE_MSG);
+                    mBluetoothService.write(Constants.GET_SENSORS_VALUE_MSG.getBytes());
                 }
             }
         });

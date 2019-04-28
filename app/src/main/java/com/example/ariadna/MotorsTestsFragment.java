@@ -15,13 +15,6 @@ import android.widget.Toast;
 public class MotorsTestsFragment extends Fragment {
     private static final String TAG = "MotorsTestsFragment";
 
-    private static final String MOTOR_LEFT_FORWARD_MSG = "motor_left_forward";
-    private static final String MOTORS_FORWARD_MSG = "motors_forward";
-    private static final String MOTOR_RIGHT_FORWARD_MSG = "motor_right_forward";
-    private static final String MOTOR_LEFT_BACKWARD_MSG = "motor_left_backward";
-    private static final String MOTORS_BACKWARD_MSG = "motors_backward";
-    private static final String MOTOR_RIGHT_BACKWARD_MSG = "motor_right_backward";
-
     private ImageButton mMotorLeftForwardButton;
     private ImageButton mMotorForwardButton;
     private ImageButton mMotorRightForwardButton;
@@ -71,7 +64,7 @@ public class MotorsTestsFragment extends Fragment {
                 Toast.makeText(getActivity(), "Left Forward", Toast.LENGTH_SHORT).show();
                 if (mBluetoothService.isConnected()) {
                     Log.d(TAG, "mMotorLeftForwardButton: onClick: Sending throw bluetooth");
-                    mBluetoothService.write(MOTOR_LEFT_FORWARD_MSG.getBytes());
+                    mBluetoothService.write(Constants.MOTOR_LEFT_FORWARD_MSG.getBytes());
                 }
             }
         });
@@ -82,7 +75,7 @@ public class MotorsTestsFragment extends Fragment {
                 Toast.makeText(getActivity(), "Forward", Toast.LENGTH_SHORT).show();
                 if (mBluetoothService.isConnected()) {
                     Log.d(TAG, "mMotorForwardButton: onClick: Sending throw bluetooth");
-                    mBluetoothService.write(MOTORS_FORWARD_MSG.getBytes());
+                    mBluetoothService.write(Constants.MOTORS_FORWARD_MSG.getBytes());
                 }
             }
         });
@@ -93,7 +86,7 @@ public class MotorsTestsFragment extends Fragment {
                 Toast.makeText(getActivity(), "Right Forward", Toast.LENGTH_SHORT).show();
                 if (mBluetoothService.isConnected()) {
                     Log.d(TAG, "mMotorRightForwardButton: onClick: Sending throw bluetooth");
-                    mBluetoothService.write(MOTOR_RIGHT_FORWARD_MSG.getBytes());
+                    mBluetoothService.write(Constants.MOTOR_RIGHT_FORWARD_MSG.getBytes());
                 }
             }
         });
@@ -104,7 +97,7 @@ public class MotorsTestsFragment extends Fragment {
                 Toast.makeText(getActivity(), "Left Backward", Toast.LENGTH_SHORT).show();
                 if (mBluetoothService.isConnected()) {
                     Log.d(TAG, "MotorLeftBackward: onClick: Sending throw bluetooth");
-                    mBluetoothService.write(MOTOR_LEFT_BACKWARD_MSG.getBytes());
+                    mBluetoothService.write(Constants.MOTOR_LEFT_BACKWARD_MSG.getBytes());
                 }
             }
         });
@@ -115,7 +108,7 @@ public class MotorsTestsFragment extends Fragment {
                 Toast.makeText(getActivity(), "Backward", Toast.LENGTH_SHORT).show();
                 if (mBluetoothService.isConnected()) {
                     Log.d(TAG, "mMotorBackwardButton: onClick: Sending throw bluetooth");
-                    mBluetoothService.write(MOTORS_BACKWARD_MSG.getBytes());
+                    mBluetoothService.write(Constants.MOTORS_BACKWARD_MSG.getBytes());
                 }
             }
         });
@@ -126,7 +119,7 @@ public class MotorsTestsFragment extends Fragment {
                 Toast.makeText(getActivity(), "Right Backward", Toast.LENGTH_SHORT).show();
                 if (mBluetoothService.isConnected()) {
                     Log.d(TAG, "mMotorRightBackwardButton: onClick: Sending throw bluetooth");
-                    mBluetoothService.write(MOTOR_RIGHT_BACKWARD_MSG.getBytes());
+                    mBluetoothService.write(Constants.MOTOR_RIGHT_BACKWARD_MSG.getBytes());
                 }
             }
         });

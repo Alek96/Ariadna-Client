@@ -17,13 +17,12 @@ import java.util.UUID;
 public class BluetoothConnectionService {
     private static final String TAG = "BluetoothConnectionSrv";
 
-    public static final int MESSAGE_READ = 1;
-    public static final int MESSAGE_WRITE = 2;
-
-    // Constants that indicate the current connection state
     public static final int STATE_NONE = 0;       // we're doing nothing
     public static final int STATE_CONNECTING = 1; // now initiating an outgoing connection
     public static final int STATE_CONNECTED = 2;  // now connected to a remote device
+
+    public static final int MESSAGE_READ = 10;
+    public static final int MESSAGE_WRITE = 11;
 
     //Standard SerialPortService ID
     private static final UUID MY_UUID_SECURE =
@@ -41,14 +40,22 @@ public class BluetoothConnectionService {
     public BluetoothConnectionService(Context context, String address) {
         Log.d(TAG, "BluetoothConnectionService: Created with context: " + context + ". address: " + address);
         mBluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
-        mState = STATE_NONE;
         mContext = context;
         mAddress = address;
+        setState(STATE_NONE);
     }
 
     public synchronized int getState() {
         Log.d(TAG, "getState: State: " + mState);
         return mState;
+    }
+
+    public synchronized void setState(int state) {
+        Log.d(TAG, "setState: " + state);
+        mState = state;
+        if (mHandler != null) {
+            mHandler.obtainMessage(state).sendToTarget();
+        }
     }
 
     public synchronized void setHandler(Handler handler) {
@@ -85,7 +92,7 @@ public class BluetoothConnectionService {
             mConnectedThread = null;
         }
 
-        mState = STATE_NONE;
+        setState(STATE_NONE);
     }
 
 
@@ -160,7 +167,7 @@ public class BluetoothConnectionService {
             Log.d(TAG, "ConnectThread: started.");
             mmDevice = device;
             mmUUID = uuid;
-            mState = STATE_CONNECTING;
+            setState(STATE_CONNECTING);
         }
 
         public void run() {
@@ -199,7 +206,7 @@ public class BluetoothConnectionService {
                 try {
                     Log.d(TAG, "ConnectThread: cancel: Closing Client Socket.");
                     mmSocket.close();
-                    mState = STATE_NONE;
+                    setState(STATE_NONE);
                 } catch (IOException e) {
                     Log.e(TAG, "ConnectThread: cancel: close() of mmSocket in ConnectThread failed. " + e.getMessage());
                 }
@@ -228,7 +235,7 @@ public class BluetoothConnectionService {
 
             mmInStream = tmpIn;
             mmOutStream = tmpOut;
-            mState = STATE_CONNECTED;
+            setState(STATE_CONNECTED);
         }
 
         public void run() {
@@ -243,7 +250,6 @@ public class BluetoothConnectionService {
                     Log.d(TAG, "ConnectedThread: run: InputStream: " + incomingMessage);
 
                     if (mHandler != null) {
-                        // Send the obtained bytes to the UI Activity
                         mHandler.obtainMessage(MESSAGE_READ, bytes, -1, buffer)
                                 .sendToTarget();
                     }
@@ -273,7 +279,7 @@ public class BluetoothConnectionService {
             try {
                 Log.d(TAG, "cancel: Closing Client Socket.");
                 mmSocked.close();
-                mState = STATE_NONE;
+                setState(STATE_NONE);
             } catch (IOException e) {
                 Log.e(TAG, "cancel: close() of mmSocket in ConnectedThread failed. " + e.getMessage());
             }

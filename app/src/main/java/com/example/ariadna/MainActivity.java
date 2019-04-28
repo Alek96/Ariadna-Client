@@ -77,7 +77,7 @@ public class MainActivity extends AppCompatActivity
         }
     }
 
-    public void active() {
+    public void activeDrawer() {
         drawer.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_OPEN);
         drawer.closeDrawer(GravityCompat.START);
     }

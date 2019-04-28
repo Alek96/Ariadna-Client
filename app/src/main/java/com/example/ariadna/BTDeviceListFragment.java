@@ -4,6 +4,8 @@ import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -128,13 +130,32 @@ public class BTDeviceListFragment extends Fragment {
             BluetoothDevice device = mPairedDevices.get(position);
 
             ((MainActivity) getActivity()).createBluetoothService(device.getAddress());
-            ((MainActivity) getActivity()).active();
-
-            Log.d(TAG, "mPairedDeviceListener: onItemClick: Change fragment to HomeFragment");
-            getFragmentManager().beginTransaction().replace(R.id.fragment_container,
-                    new HomeFragment()).commit();
+            ((MainActivity) getActivity()).getBluetoothService().setHandler(mHandler);
         }
     };
+
+    private Handler mHandler = new Handler(new Handler.Callback() {
+        @Override
+        public boolean handleMessage(Message msg) {
+            Log.d(TAG, "Handler: Started");
+            switch (msg.what) {
+                case BluetoothConnectionService.STATE_NONE:
+                    Toast.makeText(getActivity(), R.string.not_connected, Toast.LENGTH_SHORT).show();
+                    break;
+                case BluetoothConnectionService.STATE_CONNECTED:
+                    Log.d(TAG, "mHandler: STATE_CONNECTED");
+                    Toast.makeText(getActivity(), R.string.connected, Toast.LENGTH_SHORT).show();
+
+                    Log.d(TAG, "mHandler: Change fragment to HomeFragment");
+                    getFragmentManager().beginTransaction().replace(R.id.fragment_container,
+                            new HomeFragment()).commit();
+
+                    ((MainActivity) getActivity()).activeDrawer();
+                    break;
+            }
+            return false;
+        }
+    });
 
     /**
      * sort by name, then address. sort named devices first

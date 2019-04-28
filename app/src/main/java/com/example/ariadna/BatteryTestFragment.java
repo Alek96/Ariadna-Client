@@ -17,7 +17,6 @@ import android.widget.ListView;
 public class BatteryTestFragment extends Fragment {
     private static final String TAG = "BatteryTestFragment";
 
-    private static final String GET_BATTERY_LEVEL_MSG = "battery_level";
 
     // Layout Views
     private ListView mBatteryLevelView;
@@ -60,8 +59,8 @@ public class BatteryTestFragment extends Fragment {
             public void onClick(View v) {
                 Log.d(TAG, "mRefreshButton: onClick: Started");
                 if (mBluetoothService.isConnected()) {
-                    Log.d(TAG, "mRefreshButton: onClick: Sending throw bluetooth msg: " + GET_BATTERY_LEVEL_MSG);
-                    mBluetoothService.write(GET_BATTERY_LEVEL_MSG.getBytes());
+                    Log.d(TAG, "mRefreshButton: onClick: Sending throw bluetooth msg: " + Constants.GET_BATTERY_LEVEL_MSG);
+                    mBluetoothService.write(Constants.GET_BATTERY_LEVEL_MSG.getBytes());
                 }
             }
         });
